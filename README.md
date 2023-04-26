@@ -4,11 +4,19 @@ This library provides a concise and efficient way to manage errors and exception
 
 ## Usage
 
+* Add dependency to **deps.edn**:
+
+```edn
+{:deps
+    {io.github.rinconjc/clj-result {:git/sha "06fd72e"}}
+}
+```
+
 ### Returning a result value from your functions
 
 ```clojure
 (ns your-namespace.core
-    (:require [clj-result/core :as result]))
+    (:require [result/core :as result]))
 
 (defn parse-email [email]
     (if (re-matches #".+@.+" email)
@@ -21,7 +29,7 @@ This library provides a concise and efficient way to manage errors and exception
 
 ```clojure
 (ns your-namespace.core
-    (:require [clj-result/core :as result]))
+    (:require [result/core :as result]))
 
 (let [result  (parse-email "hello@example.org")]
     (assert (result/ok? result))
@@ -33,7 +41,7 @@ This library provides a concise and efficient way to manage errors and exception
 
 ```clojure
 (ns your-namespace.core
-    (:require [clj-result/core :as result :refer [try-result]]))
+    (:require [result/core :as result :refer [try-result]]))
 
 (assert (result/error? (result-of (/ 5 0))))
 
