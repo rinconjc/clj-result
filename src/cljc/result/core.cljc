@@ -1,17 +1,8 @@
-(ns result.core
-  (:import
-   (clojure.lang ISeq Util$EquivPred)))
+(ns result.core)
 
 (deftype ^:private Result [value]
-  ISeq
-  (seq [this]
-    (when-let [val (:ok value)]
-      (list val)))
-  (first [this]
-    (when-let [ok-val (:ok value)]
-      ok-val))
-  Util$EquivPred
-  (equiv [this other]
+  Object
+  (equals [this other]
     (and (instance? Result other)
          (= (.-value this) (.-value other)))))
 
@@ -128,6 +119,6 @@ Examples:
         (if (instance? Result r)
           r
           (ok r)))
-      (catch Throwable e (error e)))
+      (catch #?(:clj Throwable :cljs js/Object) e (error e)))
     result))
 
