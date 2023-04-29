@@ -8,7 +8,7 @@ This library provides a concise and efficient way to manage errors and exception
 
 ```edn
 {:deps
-    {io.github.rinconjc/clj-result {:git/sha "06fd72e"}}
+    {io.github.rinconjc/clj-result {:git/sha "405bad6"}}
 }
 ```
 
@@ -31,9 +31,8 @@ This library provides a concise and efficient way to manage errors and exception
 (ns your-namespace.core
     (:require [result/core :as result]))
 
-(let [result  (parse-email "hello@example.org")]
-    (assert (result/ok? result))
-    (assert (nil? (result/error? result))))
+(assert (result/ok? (parse-email "hello@example.org")))
+(assert (result/error? (parse-email "hello")))
 
 ```
 
@@ -41,7 +40,7 @@ This library provides a concise and efficient way to manage errors and exception
 
 ```clojure
 (ns your-namespace.core
-    (:require [result/core :as result :refer [try-result]]))
+    (:require [result/core :as result :refer [result-of]]))
 
 (assert (result/error? (result-of (/ 5 0))))
 
