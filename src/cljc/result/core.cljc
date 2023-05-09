@@ -1,11 +1,5 @@
 (ns result.core)
 
-(deftype ^:private Result [value]
-  Object
-  (equals [this other]
-    (and (instance? Result other)
-         (= (.-value this) (.-value other)))))
-
 (defn ok
   "Creates a Result object representing a successful computation with the given value.
 
@@ -18,7 +12,7 @@ Examples:
   (ok \"foo\")  ; Returns a Result object with {:ok \"foo\"}
 "
   [x]
-  (->Result {:ok x}))
+  {:ok x})
 
 (defn error
   "Creates a Result object representing a failed computation with the given error.
@@ -32,7 +26,7 @@ Examples:
   (error (Exception.))         ; Returns a Result object with {:error #<Exception java.lang.Exception>}
 "
   [e]
-  (->Result {:error e}))
+  {:error e})
 
 (defn ok?
   "Checks whether the given Result object represents a successful computation.
@@ -47,7 +41,7 @@ Examples:
   (ok? (error \"An error occurred\")) ; Returns nil
 "
   [result]
-  (:ok (.-value result)))
+  (:ok result))
 
 (defn error?
   "Checks whether the given Result object represents a failed computation.
@@ -62,7 +56,7 @@ Examples:
   (error? (ok 5)) ; Returns nil
 "
   [result]
-  (:error (.-value result)))
+  (:error result))
 
 (defn ok-or
   "Returns the value of a successful computation represented by the given Result object, or a default value if the computation failed.
@@ -116,7 +110,7 @@ Examples:
   (if-let [ok-val (ok? result)]
     (try
       (let [r (f ok-val)]
-        (if (instance? Result r)
+        (if (or (ok? r) (error? r))
           r
           (ok r)))
       (catch #?(:clj Throwable :cljs js/Object) e (error e)))
